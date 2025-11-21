@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Builds
+frontend/build/
+coverage/
+
+# Environment and config
+.env
+backend/.env
+
+# SQLite database files
+backend/*.db
+
+# Uploads
+backend/uploads/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
