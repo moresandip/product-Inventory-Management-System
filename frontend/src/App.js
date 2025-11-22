@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import api from './api/client';
 import ProductTable from './components/ProductTable';
 import HistorySidebar from './components/HistorySidebar';
@@ -112,6 +112,20 @@ function App() {
       setHistory([]);
     }
   }, [selectedProduct, fetchHistory]);
+
+  const dashboardStats = useMemo(() => {
+    const totalProducts = products.length;
+    const totalCategories = categories.length;
+    const totalStock = products.reduce((sum, item) => sum + (Number(item.stock) || 0), 0);
+    const outOfStock = products.filter((item) => Number(item.stock) === 0).length;
+
+    return [
+      { label: 'Total Products', value: totalProducts, accent: 'accent-blue' },
+      { label: 'Categories', value: totalCategories, accent: 'accent-purple' },
+      { label: 'Total Units', value: totalStock, accent: 'accent-teal' },
+      { label: 'Out of Stock', value: outOfStock, accent: 'accent-rose' },
+    ];
+  }, [products, categories]);
 
   const handleUpdateProduct = async (id, values) => {
     try {
@@ -245,53 +259,91 @@ function App() {
   return (
     <div className="app-shell">
       <header className="page-header">
-        <div>
-          <h1>Inventory Management</h1>
-          <p>Track products, stock status, and inventory history.</p>
+        <div className="page-title">
+          <span className="eyebrow">Product Inventory</span>
+          <h1>product Inventory Management System</h1>
+          <p>Stay in sync with stock levels, product status, and recent inventory activity.</p>
         </div>
-        <button className="primary" onClick={() => setIsAddModalOpen(true)}>
-          Add New Product
-        </button>
+        <div className="page-actions">
+          <button className="ghost" onClick={() => loadProducts(page)}>
+            Refresh
+          </button>
+          <button className="primary" onClick={() => setIsAddModalOpen(true)}>
+            + New Product
+          </button>
+        </div>
       </header>
+
+      <section className="hero-panel">
+        <div className="hero-content">
+          <div>
+            <p className="hero-label">Live Overview</p>
+            <h2>Monitor products, stock flow, and adjustments at a glance.</h2>
+            <span className="pulse-pill">Realtime Sync Enabled</span>
+          </div>
+          <div className="hero-actions">
+            <button
+              className="secondary"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={importing}
+            >
+              {importing ? 'Importing…' : 'Import Inventory'}
+            </button>
+            <button className="outline" onClick={handleExport}>
+              Export Snapshot
+            </button>
+            <input ref={fileInputRef} type="file" accept=".csv" hidden onChange={handleFileChange} />
+          </div>
+        </div>
+        <div className="stats-grid">
+          {dashboardStats.map((stat) => (
+            <div key={stat.label} className={`stat-card ${stat.accent}`}>
+              <p>{stat.label}</p>
+              <strong>{stat.value}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <section className="toolbar">
         <div className="toolbar-left">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+          <label className="input-chip">
+            <span>Search</span>
+            <input
+              type="text"
+              placeholder="Search by product name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </label>
+
+          <label className="input-chip">
+            <span>Category</span>
+            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+              <option value="">All Categories</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="input-chip">
+            <span>Rows</span>
+            <select value={limit} onChange={(e) => setLimit(Number(e.target.value))}>
+              {LIMIT_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option} / page
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
         <div className="toolbar-right">
-          <button
-            className="secondary"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={importing}
-          >
-            {importing ? 'Importing…' : 'Import CSV'}
+          <button className="pill-button" onClick={() => setSelectedProduct(null)}>
+            Clear Selection
           </button>
-          <button className="secondary" onClick={handleExport}>
-            Export CSV
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".csv"
-            hidden
-            onChange={handleFileChange}
-          />
         </div>
       </section>
 
@@ -316,25 +368,25 @@ function App() {
 
           {pagination && pagination.pages > 0 && (
             <div className="pagination">
-              <button disabled={page === 1} onClick={() => setPage((prev) => prev - 1)}>
+              <button
+                className="outline"
+                disabled={page === 1}
+                onClick={() => setPage((prev) => prev - 1)}
+              >
                 Previous
               </button>
-              <span>
-                Page {page} of {pagination.pages || 1}
-              </span>
+              <div className="page-indicator">
+                <span>Page</span>
+                <strong>{page}</strong>
+                <span>of {pagination.pages || 1}</span>
+              </div>
               <button
+                className="outline"
                 disabled={pagination.pages === 0 || page === pagination.pages}
                 onClick={() => setPage((prev) => prev + 1)}
               >
                 Next
               </button>
-              <select value={limit} onChange={(e) => setLimit(Number(e.target.value))}>
-                {LIMIT_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
-                    {option} / page
-                  </option>
-                ))}
-              </select>
             </div>
           )}
         </div>
