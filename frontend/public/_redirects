@@ -1,1 +1,7 @@
-yes   /index.html   200
+/api/products/*  http://localhost:5000/api/products/:splat  200
+/api/products  http://localhost:5000/api/products  200
+/api/categories  http://localhost:5000/api/categories  200
+/api/history/*  http://localhost:5000/api/history/:splat  200
+/api/import  http://localhost:5000/api/import  200
+/api/export  http://localhost:5000/api/export  200
+/*  /index.html  200
