@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { fetchProducts } from './api/client';
+import { api, fetchProducts } from './api/client';
 import ProductTable from './components/ProductTable';
 import HistorySidebar from './components/HistorySidebar';
 import AddProductModal from './components/AddProductModal';
@@ -44,7 +44,7 @@ function App() {
   const loadProducts = useCallback(
     async (targetPage = page) => {
       setLoading(true);
-      setError('');
+      setError(''); // Clear error on each load attempt
 
       try {
         if (searchQuery.trim()) {
@@ -74,6 +74,19 @@ function App() {
     },
     [limit, page, searchQuery, selectedCategory]
   );
+
+  // Auto-clear error banner after 4 seconds if set
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(''), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  // Function to manually dismiss the error banner
+  const dismissError = () => {
+    setError('');
+  };
 
   const fetchHistory = useCallback(async (productId) => {
     if (!productId) {
@@ -201,6 +214,11 @@ function App() {
       throw err;
     }
   };
+
+  // Expose loadProducts for debug reload
+  useEffect(() => {
+    window.loadProducts = loadProducts;
+  }, [loadProducts]);
 
   const handleImport = async (file) => {
     if (!file) {
@@ -353,7 +371,14 @@ function App() {
         </div>
       )}
 
-      {error && <div className="error-banner">{error}</div>}
+      {error && (
+        <div className="error-banner">
+          <span>{error}</span>
+          <button className="dismiss-button" onClick={dismissError} aria-label="Dismiss error">
+            &times;
+          </button>
+        </div>
+      )}
 
       <div className="content">
         <div className="table-wrapper">
