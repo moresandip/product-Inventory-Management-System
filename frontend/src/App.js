@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import api from './api/client';
+import { fetchProducts } from './api/client';
 import ProductTable from './components/ProductTable';
 import HistorySidebar from './components/HistorySidebar';
 import AddProductModal from './components/AddProductModal';
