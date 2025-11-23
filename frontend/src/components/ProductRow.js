@@ -71,6 +71,7 @@ const ProductRow = ({ product, onUpdate, onDelete, onSelect, isSelected }) => {
         {isEditing ? (
           <input
             type="text"
+            name="name"
             value={formValues.name || ''}
             onChange={(e) => handleFieldChange('name', e.target.value)}
           />
@@ -82,6 +83,7 @@ const ProductRow = ({ product, onUpdate, onDelete, onSelect, isSelected }) => {
         {isEditing ? (
           <input
             type="text"
+            name="unit"
             value={formValues.unit ?? ''}
             onChange={(e) => handleFieldChange('unit', e.target.value)}
           />
@@ -93,6 +95,7 @@ const ProductRow = ({ product, onUpdate, onDelete, onSelect, isSelected }) => {
         {isEditing ? (
           <input
             type="text"
+            name="category"
             value={formValues.category ?? ''}
             onChange={(e) => handleFieldChange('category', e.target.value)}
           />
@@ -104,6 +107,7 @@ const ProductRow = ({ product, onUpdate, onDelete, onSelect, isSelected }) => {
         {isEditing ? (
           <input
             type="text"
+            name="brand"
             value={formValues.brand ?? ''}
             onChange={(e) => handleFieldChange('brand', e.target.value)}
           />
@@ -116,6 +120,7 @@ const ProductRow = ({ product, onUpdate, onDelete, onSelect, isSelected }) => {
           <input
             type="number"
             min="0"
+            name="stock"
             value={formValues.stock ?? 0}
             onChange={(e) => handleFieldChange('stock', e.target.value)}
           />

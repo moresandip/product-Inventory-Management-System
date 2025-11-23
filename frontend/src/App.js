@@ -310,7 +310,7 @@ function App() {
             <button className="outline" onClick={handleExport}>
               Export Snapshot
             </button>
-            <input ref={fileInputRef} type="file" accept=".csv" hidden onChange={handleFileChange} />
+            <input ref={fileInputRef} id="csvFile" name="csvFile" type="file" accept=".csv" hidden onChange={handleFileChange} />
           </div>
         </div>
         <div className="stats-grid">
@@ -328,6 +328,8 @@ function App() {
           <label className="input-chip">
             <span>Search</span>
             <input
+              id="search"
+              name="search"
               type="text"
               placeholder="Search by product name..."
               value={searchQuery}
@@ -337,7 +339,7 @@ function App() {
 
           <label className="input-chip">
             <span>Category</span>
-            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            <select id="category" name="category" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
               <option value="">All Categories</option>
               {categories.map((category) => (
                 <option key={category} value={category}>
@@ -349,7 +351,7 @@ function App() {
 
           <label className="input-chip">
             <span>Rows</span>
-            <select value={limit} onChange={(e) => setLimit(Number(e.target.value))}>
+            <select id="limit" name="limit" value={limit} onChange={(e) => setLimit(Number(e.target.value))}>
               {LIMIT_OPTIONS.map((option) => (
                 <option key={option} value={option}>
                   {option} / page
