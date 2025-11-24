@@ -8,7 +8,7 @@
   framework = "create-react-app"
 
 [[redirects]]
-[[redirects]]
+
   from = "/*"
   to = "/index.html"
   status = 200
