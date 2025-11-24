@@ -1,4 +1,14 @@
+[build]
+  command = "cd frontend && npm install && npm run build"
+  publish = "frontend/build"
+
+[dev]
+  command = "npm run start --prefix backend"
+  targetPort = 5000
+  framework = "create-react-app"
+
 [[redirects]]
+
   from = "/*"
   to = "/index.html"
   status = 200

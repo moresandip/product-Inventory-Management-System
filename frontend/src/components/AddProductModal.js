@@ -47,26 +47,32 @@ const AddProductModal = ({ categories, onCancel, onSave }) => {
           </button>
         </div>
         <form className="modal-body" onSubmit={handleSubmit}>
-          <label>
+          <label htmlFor="product-name">
             Name
             <input
+              id="product-name"
+              name="productName"
               type="text"
               value={formValues.name}
               onChange={(e) => handleChange('name', e.target.value)}
               required
             />
           </label>
-          <label>
+          <label htmlFor="product-unit">
             Unit
             <input
+              id="product-unit"
+              name="productUnit"
               type="text"
               value={formValues.unit}
               onChange={(e) => handleChange('unit', e.target.value)}
             />
           </label>
-          <label>
+          <label htmlFor="product-category">
             Category
             <input
+              id="product-category"
+              name="productCategory"
               type="text"
               list="category-options"
               value={formValues.category}
@@ -79,26 +85,32 @@ const AddProductModal = ({ categories, onCancel, onSave }) => {
               ))}
             </datalist>
           </label>
-          <label>
+          <label htmlFor="product-brand">
             Brand
             <input
+              id="product-brand"
+              name="productBrand"
               type="text"
               value={formValues.brand}
               onChange={(e) => handleChange('brand', e.target.value)}
             />
           </label>
-          <label>
+          <label htmlFor="product-stock">
             Stock
             <input
+              id="product-stock"
+              name="productStock"
               type="number"
               min="0"
               value={formValues.stock ?? 0}
               onChange={(e) => handleChange('stock', e.target.value)}
             />
           </label>
-          <label>
+          <label htmlFor="product-status">
             Status
             <select
+              id="product-status"
+              name="productStatus"
               value={formValues.status}
               onChange={(e) => handleChange('status', e.target.value)}
             >
@@ -106,9 +118,11 @@ const AddProductModal = ({ categories, onCancel, onSave }) => {
               <option value="Out of Stock">Out of Stock</option>
             </select>
           </label>
-          <label>
+          <label htmlFor="product-image">
             Image URL
             <input
+              id="product-image"
+              name="productImage"
               type="text"
               value={formValues.image}
               onChange={(e) => handleChange('image', e.target.value)}

@@ -1,0 +1,1 @@
+{"products":[{"id":4,"name":"ritik more","unit":"3","category":"mobile","brand":"vivo","stock":2,"status":"In Stock","image":"www.vivo.com"},{"id":2,"name":"sandip more","unit":"3","category":"Electronics","brand":"tv","stock":3,"status":"In Stock","image":"www/sonytv.com"}],"pagination":{"page":1,"limit":10,"total":2,"pages":1}}
